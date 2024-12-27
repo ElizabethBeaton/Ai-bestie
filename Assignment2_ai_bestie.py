@@ -1,6 +1,9 @@
-import tests_datetime as dt
-from tests_datetime import datetime, timedelta #also so i can access days ahead
+
+import datetime as dt
+from datetime import datetime, timedelta #also so i can access days ahead
 import requests
+from datetime import timezone
+
 
 api_key = '65ec67aa1a3f45a2b8d746ee7b0ab4e3'
 
@@ -124,8 +127,11 @@ def main():
             round(kelvin_to_celsius(temperature))
             round(kelvin_to_celsius(feels_like_kelvin))
             display_weather_icons(weather_description)
-            sunrise_time = dt.datetime.utcfromtimestamp(data['sys']['sunrise'] + data['timezone']) + timedelta(days=4) #gets the time of the sunset/sunrise on the fourth day from the current date
-            sunset_time = dt.datetime.utcfromtimestamp(data['sys']['sunset'] + data['timezone']) + timedelta(days=4) # ^^
+
+            sunrise_time = datetime.fromtimestamp(data['sys']['sunrise'], tz=timezone.utc) + timedelta(days=4) #gets the time of the sunset/sunrise on the fourth day from the current date
+            sunset_time = datetime.fromtimestamp(data['sys']['sunset'], tz=timezone.utc) + timedelta(days=4)
+
+
 
             print(
                 f"This will be soo cute! If we get to {second_holiday_city} before {sunrise_time.strftime('%H:%M')}am, we'll get to see the sun rise 🌇☄️")
@@ -137,4 +143,8 @@ if __name__ == "__main__":
     main()
     with open('besties_holiday_plan.txt', 'w') as file:
         file.write(f"We are going to have the most crazy holiday in {first_holiday_city} and {second_holiday_city} 😁🤪🦾!!!!\n")
+
         #the string with varibale that will be displayed in new file
+
+
+
